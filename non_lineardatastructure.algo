@@ -1,0 +1,91 @@
+
+//structure of a binary tree
+tree_basic_operation :	STRUCT     
+                    VAL:INTEGER;
+                    LC : ^tree_basic_operation;
+                    RC : ^tree_basic_operation;
+                END_STRUCT
+
+//function to count the node number
+FUNCTION countNode(root:^tree_basic_operation) : ^tree_basic_operation
+
+BEGIN
+IF (root=NULL) THEN //base case
+    RETURN 0;
+    
+END_IF     
+
+    RETURN countNode(root.LC)+countNode(root.RC)+1;// recursive to call left child and right child +1 for the root
+    
+
+
+END
+
+//function to give the tree height
+FUNCTION heightTree(root:^tree_basic_operation) : ^tree_basic_operation
+
+BEGIN
+    IF (root=NULL) THEN //base case: an empty tree has a height of 0
+    RETURN 0;
+    END_IF
+RETURN 1 + Math.max(heightTree(root.LC), height(root.RC)) //recur for left and right subtree and consider maximum height
+END
+
+
+
+
+
+//function to give the number of leaves in a binary tree
+FUNCTION NumLeavesTree(root:^tree_basic_operation) : ^tree_basic_operation
+
+BEGIN
+    IF (root=NULL) THEN //base case
+    RETURN 0;
+    END_IF 
+    IF (root.LC=NULL AND root.RC=NULL) THEN
+        RETURN 1;
+    ELSE
+        RETURN NumLeavesTree(root.LC)+NumLeavesTree(root.RC);
+    END_IF
+END
+
+//function to give the max in a binary tree
+
+FUNCTION GetMax(root:^tree_basic_operation) : ^tree_basic_operation
+
+BEGIN
+    IF (root=NULL) THEN //base case
+    RETURN 0;
+    END_IF 
+    
+        RETURN GetMax(root^.VAL, getMax(root.LC), getMax(RC))
+    
+END
+
+//function to test if a binary tree is a full binary tree
+// 1) If a binary tree node is NULL then it is a full binary tree.
+// 2) If a binary tree node does have empty left and right sub-trees, then it is a full binary tree by definition.
+// 3) If a binary tree node has left and right sub-trees, then it is a part of a full binary tree by definition. In this case recursively check if the left and right sub-trees are also binary trees themselves.
+// 4) In all other combinations of right and left sub-trees, the binary tree is not a full binary tree.
+
+FUNCTION IsFull(root:^tree_basic_operation) : ^tree_basic_operation
+
+BEGIN
+    IF (root=NULL) THEN //base case
+    RETURN TRUE;
+    END_IF 
+     // if leaf node 
+        IF (root^.LC = NULL AND root^.RC = NULL) THEN
+            RETURN TRUE;
+        END_IF
+        IF ((root^.LC<>NULL) AND (root.RC<>NULL)) THEN  //if both left and right subtrees are not null, they are full
+
+            RETURN (isFull(root^.LC) AND isFull(root^.RC)); 
+
+        ELSE
+        RETURN FALSE;  // if none work 
+END_IF
+END
+
+
+
